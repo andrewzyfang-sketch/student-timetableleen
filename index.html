@@ -153,7 +153,10 @@ authForm.addEventListener("submit", async event => {
   joinError.textContent = authMode === "login" ? "正在登录…" : "正在创建账号…";
   try {
     if (authMode === "login") {
-      await signInWithEmailAndPassword(auth, email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      const profileSnapshot = await getDoc(doc(db, "users", credential.user.uid));
+      if (!profileSnapshot.exists()) throw new Error("这个账号没有群聊资料，请重新创建账号。");
+      showChat(profileSnapshot.data());
       return;
     }
     const nameRef = doc(db, "usernames", encodeURIComponent(name.toLocaleLowerCase()));
@@ -199,6 +202,7 @@ messageForm.addEventListener("submit", async event => {
   window.addEventListener("leen-user",function(event){var user=event.detail;if(user){info.textContent="名字："+user.name+" · 编号 #"+user.serial;signOutButton.hidden=false}else{info.textContent="尚未加入群聊";signOutButton.hidden=true}});
 })();
 </script></body></html>
+
 
 
 
