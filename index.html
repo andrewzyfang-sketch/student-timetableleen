@@ -6,7 +6,7 @@
   <div id="messages" class="messages" aria-live="polite"></div>
   <form id="messageForm" class="message-form"><input id="messageInput" maxlength="500" autocomplete="off" placeholder="输入消息…" required><button class="save">发送</button></form>
 </section>
-<div id="joinScreen" class="join-screen"><div class="join-card"><img src="logo.png" alt="LEEN logo"><h2>加入班级群聊</h2><p>输入一个名字。每个名字只能使用一次，系统会自动给你编号。</p><form id="joinForm"><label for="joinName">你的名字</label><input id="joinName" maxlength="24" autocomplete="nickname" placeholder="例如：小明" required><p id="joinError" class="join-error" aria-live="polite"></p><button class="save btn-block" type="submit">创建账号并加入</button></form><button class="cancel" id="skipJoin" type="button">暂不创建账号</button></div></div></main><dialog id="modal"><form id="form"><h2>Add a class</h2><label>Class name<input id="name" required placeholder="e.g. Mathematics"></label><label>Day<select id="day"></select></label><div class="grid"><label>Starts<input id="start" type="time" required></label><label>Ends<input id="end" type="time" required></label></div><label>Room or note<input id="room" placeholder="e.g. Room B204"></label><label id="colorLabel">Subject colour<input id="color" type="color" value="#4f46e5"></label><label id="iconLabel">Subject icon<select id="subjectIcon"><option value="📚">📚 Books</option><option value="🔢">🔢 Mathematics</option><option value="🧪">🧪 Chemistry</option><option value="⚛️">⚛️ Physics</option><option value="💻">💻 Computer science</option><option value="🌍">🌍 Geography</option><option value="🎨">🎨 Art</option><option value="🎵">🎵 Music</option><option value="⚽">⚽ Sport</option><option value="📝">📝 Other</option></select></label><div class="actions"><button class="cancel" type="button" id="cancel">Cancel</button><button class="save">Save class</button></div></form></dialog><script>
+<div id="joinScreen" class="join-screen"><div class="join-card"><img src="logo.png" alt="LEEN logo"><h2 id="authTitle">创建群聊账号</h2><p id="authHint">输入一个不重复的名字和密码。系统会自动给你编号。</p><form id="authForm"><label for="joinName">你的名字</label><input id="joinName" maxlength="24" autocomplete="username" placeholder="例如：小明" required><label for="accountPassword">密码</label><input id="accountPassword" type="password" minlength="6" autocomplete="new-password" placeholder="至少 6 个字符" required><p id="joinError" class="join-error" aria-live="polite"></p><button class="save btn-block" id="authSubmit" type="submit">创建账号并加入</button></form><button class="cancel" id="switchAuth" type="button">已有账号？登录</button><button class="cancel" id="skipJoin" type="button">暂不创建账号</button></div></div></main><dialog id="modal"><form id="form"><h2>Add a class</h2><label>Class name<input id="name" required placeholder="e.g. Mathematics"></label><label>Day<select id="day"></select></label><div class="grid"><label>Starts<input id="start" type="time" required></label><label>Ends<input id="end" type="time" required></label></div><label>Room or note<input id="room" placeholder="e.g. Room B204"></label><label id="colorLabel">Subject colour<input id="color" type="color" value="#4f46e5"></label><label id="iconLabel">Subject icon<select id="subjectIcon"><option value="📚">📚 Books</option><option value="🔢">🔢 Mathematics</option><option value="🧪">🧪 Chemistry</option><option value="⚛️">⚛️ Physics</option><option value="💻">💻 Computer science</option><option value="🌍">🌍 Geography</option><option value="🎨">🎨 Art</option><option value="🎵">🎵 Music</option><option value="⚽">⚽ Sport</option><option value="📝">📝 Other</option></select></label><div class="actions"><button class="cancel" type="button" id="cancel">Cancel</button><button class="save">Save class</button></div></form></dialog><script>
 const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],seed=[['Mathematics','Monday','09:00','10:00','Room B204'],['English Literature','Monday','11:15','12:15','Room A112'],['Physics','Tuesday','10:00','11:00','Science Lab 3'],['Computer Science','Wednesday','13:30','15:00','Lab C08'],['History','Thursday','09:30','10:30','Room A104'],['Art','Friday','12:00','13:30','Studio 2']].map((x,i)=>({id:i,...Object.fromEntries(['name','day','start','end','room'].map((k,j)=>[k,x[j]]))}));let list=JSON.parse(localStorage.getItem('timetable')||'null')||seed;const $=x=>document.querySelector(x),today=days[(new Date().getDay()+6)%7],fmt=x=>new Date('2000-01-01T'+x).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),sort=x=>[...x].sort((a,b)=>a.start.localeCompare(b.start));$('#date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'short',day:'numeric'}).format(new Date());$('#day').innerHTML=days.map(x=>'<option '+(x===today?'selected':'')+'>'+x+'</option>').join('');function del(id){list=list.filter(x=>x.id!==id);localStorage.setItem('timetable',JSON.stringify(list));render()}window.del=del;function row(x,buttons=false){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar"></i><div><p>'+x.name+'</p><small>'+ (x.room||'No location added')+'</small></div>'+ (buttons?'<button class="del" aria-label="Delete '+x.name+'" onclick="del('+x.id+')">×</button>':'')+'</article>'}function render(){let t=sort(list.filter(x=>x.day===today));$('#today').innerHTML='<div class="heading"><h2>'+today+'’s classes</h2><span>'+t.length+' scheduled</span></div>'+(t.length?'<div class="list">'+t.map(x=>row(x,true)).join('')+'</div>':'<div class="empty">No classes today. Enjoy your free time!</div>');$('#week').innerHTML='<div class="week">'+days.map(d=>{let a=sort(list.filter(x=>x.day===d));return '<section class="day"><h3><span>'+d+'</span><small>'+ (a.length||'Free')+'</small></h3>'+ (a.map(x=>'<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b>'+x.name+'</b><br><small>'+ (x.room||'No location added')+'</small></div></div>').join('')||'<div class="item"><small>No classes</small></div>')+'</section>'}).join('')+'</div>'}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));$('#today').hidden=b.dataset.v!=='today';$('#week').hidden=b.dataset.v!=='week'});$('#add').onclick=()=>$('#modal').showModal();$('#cancel').onclick=()=>$('#modal').close();$('#form').onsubmit=e=>{e.preventDefault();let x={id:Date.now(),name:$('#name').value,day:$('#day').value,start:$('#start').value,end:$('#end').value,room:$('#room').value};if(x.end<=x.start)return alert('End time must be after the start time.');list.push(x);localStorage.setItem('timetable',JSON.stringify(list));e.target.reset();$('#modal').close();render()};render();
 </script><script>
 var uiLanguage=localStorage.getItem('timetable-language')||'en';
@@ -67,8 +67,8 @@ render=function(){
 render();
 </script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, addDoc, collection, query, orderBy, limit, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, addDoc, collection, query, orderBy, limit, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBT4X9ZtJLCg5Ki1eAZ6eNP5pbq_hKJ5Lw",
@@ -81,92 +81,116 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-let chatUser = null;
+let chatUser = null, authMode = "register", stopMessages = null, registrationInProgress = false;
 
 const joinScreen = document.querySelector("#joinScreen");
 const chatApp = document.querySelector("#chatApp");
-const joinForm = document.querySelector("#joinForm");
+const authForm = document.querySelector("#authForm");
+const joinName = document.querySelector("#joinName");
+const accountPassword = document.querySelector("#accountPassword");
 const joinError = document.querySelector("#joinError");
+const authTitle = document.querySelector("#authTitle");
+const authHint = document.querySelector("#authHint");
+const authSubmit = document.querySelector("#authSubmit");
+const switchAuth = document.querySelector("#switchAuth");
+const skipJoin = document.querySelector("#skipJoin");
+const joinChatButton = document.querySelector("#joinChatButton");
 const chatIdentity = document.querySelector("#chatIdentity");
 const messages = document.querySelector("#messages");
 const messageForm = document.querySelector("#messageForm");
 const messageInput = document.querySelector("#messageInput");
-const skipJoin = document.querySelector("#skipJoin");
-const joinChatButton = document.querySelector("#joinChatButton");
-skipJoin.addEventListener("click", () => { joinScreen.hidden = true; chatApp.hidden = true; joinChatButton.hidden = false; });
-joinChatButton.addEventListener("click", () => { joinScreen.hidden = false; });
 
-function showChat(user) {
-  chatUser = user;
-  chatIdentity.textContent = "编号 #" + user.serial + " · " + user.name;
-  joinScreen.hidden = true;
-  chatApp.hidden = false; document.querySelector("#joinChatButton").hidden = true;
+function accountEmail(name) {
+  const bytes = new TextEncoder().encode(name.toLocaleLowerCase());
+  let binary = ""; bytes.forEach(byte => binary += String.fromCharCode(byte));
+  return "u" + btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/,"") + "@leen-timetable-1ea47.firebaseapp.com";
+}
+function validName(name) { return /^[\p{L}\p{N}_ -]{2,24}$/u.test(name); }
+function showJoin(mode = "register") {
+  authMode = mode; joinError.textContent = ""; joinScreen.hidden = false; chatApp.hidden = true;
+  const login = mode === "login";
+  authTitle.textContent = login ? "登录群聊账号" : "创建群聊账号";
+  authHint.textContent = login ? "输入你的名字和密码后进入群聊。" : "输入一个不重复的名字和密码。系统会自动给你编号。";
+  authSubmit.textContent = login ? "登录并加入" : "创建账号并加入";
+  switchAuth.textContent = login ? "没有账号？创建账号" : "已有账号？登录";
+  accountPassword.autocomplete = login ? "current-password" : "new-password";
+}
+function showChat(profile) {
+  chatUser = profile; chatIdentity.textContent = "编号 #" + profile.serial + " · " + profile.name;
+  joinScreen.hidden = true; chatApp.hidden = false; joinChatButton.hidden = true;
+  if (stopMessages) stopMessages();
   const messageQuery = query(collection(db, "messages"), orderBy("createdAt", "asc"), limit(80));
-  onSnapshot(messageQuery, snap => {
+  stopMessages = onSnapshot(messageQuery, snap => {
     messages.replaceChildren();
     snap.forEach(item => {
       const data = item.data(), row = document.createElement("article");
       row.className = "message" + (data.uid === auth.currentUser.uid ? " mine" : "");
-      const name = document.createElement("b");
-      name.textContent = "#" + data.serial + " " + data.name;
-      const text = document.createElement("div");
-      text.textContent = data.text;
-      const time = document.createElement("small");
-      time.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : "刚刚";
-      row.append(name, text, time);
-      messages.append(row);
+      const name = document.createElement("b"); name.textContent = "#" + data.serial + " " + data.name;
+      const text = document.createElement("div"); text.textContent = data.text;
+      const time = document.createElement("small"); time.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : "刚刚";
+      row.append(name, text, time); messages.append(row);
     });
     messages.scrollTop = messages.scrollHeight;
   });
 }
-
 onAuthStateChanged(auth, async user => {
-  if (!user) { await signInAnonymously(auth); return; }
+  if (!user) return;
   const profile = await getDoc(doc(db, "users", user.uid));
   if (profile.exists()) showChat(profile.data());
+  else if (!registrationInProgress) { await signOut(auth); }
 });
+switchAuth.addEventListener("click", () => showJoin(authMode === "login" ? "register" : "login"));
+skipJoin.addEventListener("click", () => { joinScreen.hidden = true; chatApp.hidden = true; joinChatButton.hidden = false; });
+joinChatButton.addEventListener("click", () => showJoin("login"));
 
-joinForm.addEventListener("submit", async event => {
+authForm.addEventListener("submit", async event => {
   event.preventDefault();
-  const name = document.querySelector("#joinName").value.trim();
-  const valid = /^[\p{L}\p{N}_ -]{2,24}$/u.test(name);
-  if (!valid) { joinError.textContent = "名字需要 2–24 个字，可使用中文、字母、数字、空格、_ 或 -。"; return; }
-  const normalized = name.toLocaleLowerCase();
-  joinError.textContent = "正在创建账号…";
+  const name = joinName.value.trim(), password = accountPassword.value, email = accountEmail(name);
+  if (!validName(name)) { joinError.textContent = "名字需要 2–24 个字，可使用中文、字母、数字、空格、_ 或 -。"; return; }
+  if (password.length < 6) { joinError.textContent = "密码至少需要 6 个字符。"; return; }
+  joinError.textContent = authMode === "login" ? "正在登录…" : "正在创建账号…";
   try {
+    if (authMode === "login") {
+      await signInWithEmailAndPassword(auth, email, password);
+      return;
+    }
+    const nameRef = doc(db, "usernames", encodeURIComponent(name.toLocaleLowerCase()));
+    const alreadyUsed = await getDoc(nameRef);
+    if (alreadyUsed.exists()) throw new Error("这个名字已经被使用，请换一个。");
+    registrationInProgress = true;
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
     const profile = await runTransaction(db, async transaction => {
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      const nameRef = doc(db, "usernames", encodeURIComponent(normalized));
+      const userRef = doc(db, "users", credential.user.uid);
+      const registryRef = doc(db, "usernames", encodeURIComponent(name.toLocaleLowerCase()));
       const counterRef = doc(db, "system", "counter");
-      const nameUsed = await transaction.get(nameRef);
-      if (nameUsed.exists()) throw new Error("这个名字已经被使用，请换一个。");
+      const used = await transaction.get(registryRef);
+      if (used.exists()) throw new Error("这个名字已经被使用，请换一个。");
       const counter = await transaction.get(counterRef);
       const serial = (counter.exists() ? (counter.data().lastSerial || 0) : 0) + 1;
-      const data = { name, serial, uid: auth.currentUser.uid, createdAt: serverTimestamp() };
-      transaction.set(userRef, data);
-      transaction.set(nameRef, { uid: auth.currentUser.uid, name, serial });
-      transaction.set(counterRef, { lastSerial: serial });
+      const data = { name, serial, uid: credential.user.uid, createdAt: serverTimestamp() };
+      transaction.set(userRef, data); transaction.set(registryRef, { uid: credential.user.uid, name, serial }); transaction.set(counterRef, { lastSerial: serial });
       return data;
     });
+    registrationInProgress = false;
     showChat(profile);
   } catch (error) {
-    joinError.textContent = error.message || "无法创建账号，请再试一次。";
+    registrationInProgress = false;
+    const codes = { "auth/email-already-in-use":"这个名字已经被使用，请换一个。", "auth/invalid-credential":"名字或密码不正确。", "auth/wrong-password":"名字或密码不正确。", "auth/user-not-found":"名字或密码不正确。" };
+    joinError.textContent = codes[error.code] || error.message || "无法完成操作，请再试一次。";
   }
 });
-
 messageForm.addEventListener("submit", async event => {
   event.preventDefault();
   const text = messageInput.value.trim();
-  if (!text || !chatUser) return;
+  if (!text || !chatUser || !auth.currentUser) return;
   messageInput.disabled = true;
-  try {
-    await addDoc(collection(db, "messages"), { text, name: chatUser.name, serial: chatUser.serial, uid: auth.currentUser.uid, createdAt: serverTimestamp() });
-    messageInput.value = "";
-  } catch (error) {
-    alert("发送失败，请检查网络后重试。");
-  } finally { messageInput.disabled = false; messageInput.focus(); }
+  try { await addDoc(collection(db, "messages"), { text, name: chatUser.name, serial: chatUser.serial, uid: auth.currentUser.uid, createdAt: serverTimestamp() }); messageInput.value = ""; }
+  catch (error) { alert("发送失败，请检查网络后重试。"); }
+  finally { messageInput.disabled = false; messageInput.focus(); }
 });
 </script></body></html>
+
+
 
 
 
