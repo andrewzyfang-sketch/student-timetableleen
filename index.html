@@ -1,217 +1,53 @@
 ﻿<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Timetable</title><link rel="icon" type="image/png" href="logo.png"><link rel="apple-touch-icon" href="logo.png"><style>
-:root{--i:#172033;--m:#697086;--b:#f6f7fb;--c:#fff;--l:#e4e6ee;--a:#4f46e5}*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--i);font:16px system-ui,sans-serif}.app{max-width:650px;margin:auto;padding:24px 16px 40px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:1.5rem;margin:0}.sub{color:var(--m);font-size:.9rem;margin:4px 0 20px}.add,.save{border:0;border-radius:11px;padding:10px 14px;color:#fff;background:var(--a);font-weight:700}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#e9eaf1;border-radius:12px}.tab{border:0;border-radius:8px;padding:9px;background:transparent;color:var(--m);font-weight:700}.tab.active{background:#fff;color:var(--i)}.heading{display:flex;justify-content:space-between;align-items:baseline;margin:20px 2px 10px}.heading h2{font-size:1rem;margin:0}.heading span,.time,small{color:var(--m);font-size:.82rem}.list{display:grid;gap:10px}.class{display:grid;grid-template-columns:58px 5px 1fr auto;gap:12px;align-items:center;padding:13px;background:var(--c);border:1px solid var(--l);border-radius:14px}.bar{height:42px;border-radius:8px;background:var(--a)}.class p{margin:0;font-weight:700}.class small{display:block;margin-top:3px}.del{border:0;background:transparent;color:var(--m);font-size:1.2rem}.empty{padding:30px;text-align:center;color:var(--m);border:1px dashed var(--l);border-radius:14px;background:var(--c)}.week{display:grid;gap:10px}.day{background:var(--c);border:1px solid var(--l);border-radius:14px;overflow:hidden}.day h3{display:flex;justify-content:space-between;font-size:.95rem;margin:0;padding:12px;border-bottom:1px solid var(--l)}.item{display:grid;grid-template-columns:58px 1fr;gap:12px;padding:11px 12px;border-bottom:1px solid var(--l)}.item:last-child{border:0}.item b{font-size:.92rem}dialog{border:0;border-radius:18px;width:min(92vw,420px);padding:0;box-shadow:0 20px 60px #0005}dialog::backdrop{background:#17203380}form{padding:20px}form h2{margin:0 0 16px}label{display:block;font-size:.85rem;font-weight:700;margin:12px 0 5px}input,select{width:100%;padding:10px;border:1px solid #d9dce8;border-radius:9px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;justify-content:end;gap:9px;margin-top:20px}.cancel{border:0;background:transparent;color:var(--m);font-weight:700;padding:10px}@media(min-width:600px){.week{grid-template-columns:1fr 1fr}}
-.brand{display:flex;align-items:center;gap:10px}.brand img{width:48px;height:48px;object-fit:cover;border-radius:50%;border:1px solid var(--l)}#language{width:auto;padding:8px;margin-left:8px}.subject-picture{width:38px;height:38px;object-fit:cover;border-radius:9px;vertical-align:middle;margin-right:7px}.week-picture{width:24px;height:24px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:6px}.chat-head{display:flex;justify-content:space-between;align-items:center;margin:28px 2px 10px}.chat-head h2{font-size:1.1rem;margin:0}.chat-head p{margin:3px 0 0;color:var(--m);font-size:.85rem}.chat-live{color:#16803c;font-size:.82rem}.messages{height:320px;overflow:auto;padding:12px;background:var(--c);border:1px solid var(--l);border-radius:14px;display:grid;gap:10px}.message{max-width:85%;padding:10px 12px;border-radius:12px;background:#f0f1f7}.message.mine{justify-self:end;background:#e8e7ff}.message b{font-size:.82rem}.message small{display:block;margin-top:4px}.message-form{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 0}.join-screen{position:fixed;inset:0;background:#17203399;display:grid;place-items:center;padding:16px;z-index:10}.join-card{width:min(92vw,390px);background:var(--c);border-radius:18px;padding:24px;text-align:center;box-shadow:0 20px 60px #0005}.join-card img{width:74px;height:74px;object-fit:cover;border-radius:50%}.join-card h2{margin:12px 0 6px}.join-card p{color:var(--m);font-size:.9rem}.join-card label{text-align:left}.join-error{min-height:1.2em;color:#b42318;text-align:left}.btn-block{width:100%}.profile-button{border:0;background:transparent;padding:0;cursor:pointer}.profile-button img{width:48px;height:48px;object-fit:cover;border-radius:50%;border:1px solid var(--l);display:block}.profile-panel{padding:22px;min-width:min(88vw,340px);position:relative}.profile-panel h2{margin:0 0 16px}.profile-panel h3{font-size:1rem;margin:18px 0 6px}.profile-panel hr{border:0;border-top:1px solid var(--l);margin:18px 0}.profile-close{position:absolute;right:12px;top:10px}.account-box{background:var(--b);border-radius:10px;padding:12px;margin-bottom:12px;color:var(--m)}</style></head><body><main class="app"><header><div class="brand"><button class="profile-button" id="profileButton" type="button" aria-label="Account settings"><img src="logo.png" alt="LEEN timetable logo"></button><div><h1>My timetable</h1><p class="sub" id="date"></p></div></div><button class="add" id="add">+ Add class</button><label class="sr-only" for="language">Language</label><select id="language" aria-label="Language"><option value="en">English</option><option value="zh">中文</option></select><button class="cancel" id="joinChatButton" type="button">加入群聊</button></header><nav class="tabs"><button class="tab active" data-v="today">Today</button><button class="tab" data-v="week">Week</button></nav><section id="today"></section><section id="week" hidden></section><section id="chatApp" hidden>
-  <div class="chat-head"><div><h2>班级群聊</h2><p id="chatIdentity"></p></div><span class="chat-live">● 实时在线</span></div>
-  <div id="messages" class="messages" aria-live="polite"></div>
-  <form id="messageForm" class="message-form"><input id="messageInput" maxlength="500" autocomplete="off" placeholder="输入消息…" required><button class="save">发送</button></form>
-</section>
-<div id="joinScreen" class="join-screen"><div class="join-card"><img src="logo.png" alt="LEEN logo"><h2 id="authTitle">创建群聊账号</h2><p id="authHint">输入一个不重复的名字和密码。系统会自动给你编号。</p><form id="authForm"><label for="joinName">你的名字</label><input id="joinName" maxlength="24" autocomplete="username" placeholder="例如：小明" required><label for="accountPassword">密码</label><input id="accountPassword" type="password" minlength="6" autocomplete="new-password" placeholder="至少 6 个字符" required><p id="joinError" class="join-error" aria-live="polite"></p><button class="save btn-block" id="authSubmit" type="submit">创建账号并加入</button></form><button class="cancel" id="switchAuth" type="button">已有账号？登录</button><button class="cancel" id="skipJoin" type="button">暂不创建账号</button></div></div><dialog id="profileDialog"><section class="profile-panel"><button class="del profile-close" id="closeProfile" type="button" aria-label="Close">×</button><h2>账户设置</h2><div class="account-box" id="accountInfo">尚未加入群聊</div><button class="cancel" id="accountSignOut" type="button" hidden>退出账号</button><hr><h3>语言设置</h3><label for="profileLanguage">显示语言</label><select id="profileLanguage"><option value="en">English</option><option value="zh">中文</option></select></section></dialog></main><dialog id="modal"><form id="form"><h2>Add a class</h2><label>Class name<input id="name" required placeholder="e.g. Mathematics"></label><label>Day<select id="day"></select></label><div class="grid"><label>Starts<input id="start" type="time" required></label><label>Ends<input id="end" type="time" required></label></div><label>Room or note<input id="room" placeholder="e.g. Room B204"></label><label id="colorLabel">Subject colour<input id="color" type="color" value="#4f46e5"></label><label id="iconLabel">Subject icon<select id="subjectIcon"><option value="📚">📚 Books</option><option value="🔢">🔢 Mathematics</option><option value="🧪">🧪 Chemistry</option><option value="⚛️">⚛️ Physics</option><option value="💻">💻 Computer science</option><option value="🌍">🌍 Geography</option><option value="🎨">🎨 Art</option><option value="🎵">🎵 Music</option><option value="⚽">⚽ Sport</option><option value="📝">📝 Other</option></select></label><div class="actions"><button class="cancel" type="button" id="cancel">Cancel</button><button class="save">Save class</button></div></form></dialog><script>
-const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],seed=[['Mathematics','Monday','09:00','10:00','Room B204'],['English Literature','Monday','11:15','12:15','Room A112'],['Physics','Tuesday','10:00','11:00','Science Lab 3'],['Computer Science','Wednesday','13:30','15:00','Lab C08'],['History','Thursday','09:30','10:30','Room A104'],['Art','Friday','12:00','13:30','Studio 2']].map((x,i)=>({id:i,...Object.fromEntries(['name','day','start','end','room'].map((k,j)=>[k,x[j]]))}));let list=JSON.parse(localStorage.getItem('timetable')||'null')||seed;const $=x=>document.querySelector(x),today=days[(new Date().getDay()+6)%7],fmt=x=>new Date('2000-01-01T'+x).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),sort=x=>[...x].sort((a,b)=>a.start.localeCompare(b.start));$('#date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'short',day:'numeric'}).format(new Date());$('#day').innerHTML=days.map(x=>'<option '+(x===today?'selected':'')+'>'+x+'</option>').join('');function del(id){list=list.filter(x=>x.id!==id);localStorage.setItem('timetable',JSON.stringify(list));render()}window.del=del;function row(x,buttons=false){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar"></i><div><p>'+x.name+'</p><small>'+ (x.room||'No location added')+'</small></div>'+ (buttons?'<button class="del" aria-label="Delete '+x.name+'" onclick="del('+x.id+')">×</button>':'')+'</article>'}function render(){let t=sort(list.filter(x=>x.day===today));$('#today').innerHTML='<div class="heading"><h2>'+today+'’s classes</h2><span>'+t.length+' scheduled</span></div>'+(t.length?'<div class="list">'+t.map(x=>row(x,true)).join('')+'</div>':'<div class="empty">No classes today. Enjoy your free time!</div>');$('#week').innerHTML='<div class="week">'+days.map(d=>{let a=sort(list.filter(x=>x.day===d));return '<section class="day"><h3><span>'+d+'</span><small>'+ (a.length||'Free')+'</small></h3>'+ (a.map(x=>'<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b>'+x.name+'</b><br><small>'+ (x.room||'No location added')+'</small></div></div>').join('')||'<div class="item"><small>No classes</small></div>')+'</section>'}).join('')+'</div>'}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));$('#today').hidden=b.dataset.v!=='today';$('#week').hidden=b.dataset.v!=='week'});$('#add').onclick=()=>$('#modal').showModal();$('#cancel').onclick=()=>$('#modal').close();$('#form').onsubmit=e=>{e.preventDefault();let x={id:Date.now(),name:$('#name').value,day:$('#day').value,start:$('#start').value,end:$('#end').value,room:$('#room').value};if(x.end<=x.start)return alert('End time must be after the start time.');list.push(x);localStorage.setItem('timetable',JSON.stringify(list));e.target.reset();$('#modal').close();render()};render();
-</script><script>
-var uiLanguage=localStorage.getItem('timetable-language')||'en';
-var textPack={
- en:{title:'My timetable',add:'+ Add class',today:'Today',week:'Week',addTitle:'Add a class',className:'Class name',day:'Day',starts:'Starts',ends:'Ends',room:'Room or note',cancel:'Cancel',save:'Save class',scheduled:'scheduled',free:'Free',noClasses:'No classes',noToday:'No classes today. Enjoy your free time!',noLocation:'No location added',delete:'Delete',endAlert:'End time must be after the start time.',days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']},
- zh:{title:'我的课程表',add:'+ 添加课程',today:'今天',week:'本周',addTitle:'添加课程',className:'课程名称',day:'星期',starts:'开始时间',ends:'结束时间',room:'教室或备注',cancel:'取消',save:'保存课程',scheduled:'节课',free:'空闲',noClasses:'没有课程',noToday:'今天没有课程，好好休息！',noLocation:'未添加地点',delete:'删除',endAlert:'结束时间必须晚于开始时间。',days:['星期一','星期二','星期三','星期四','星期五','星期六','星期日']}
-};
-function languageText(){return textPack[uiLanguage]}
-function applyLanguage(){
- var q=languageText(), labels=document.querySelectorAll('#form label');
- document.documentElement.lang=uiLanguage==='zh'?'zh':'en';
- document.title=q.title; document.querySelector('h1').textContent=q.title; document.querySelector('#add').textContent=q.add;
- document.querySelector('[data-v="today"]').textContent=q.today; document.querySelector('[data-v="week"]').textContent=q.week;
- document.querySelector('#form h2').textContent=q.addTitle; labels[0].childNodes[0].nodeValue=q.className; labels[1].childNodes[0].nodeValue=q.day; labels[2].childNodes[0].nodeValue=q.starts; labels[3].childNodes[0].nodeValue=q.ends; labels[4].childNodes[0].nodeValue=q.room;
- document.querySelector('#cancel').textContent=q.cancel; document.querySelector('.save').textContent=q.save;
- document.querySelector('#day').innerHTML=days.map((d,i)=>'<option value="'+d+'" '+(d===today?'selected':'')+'>'+q.days[i]+'</option>').join('');
- render();
-}
-render=function(){
- var q=languageText(), t=sort(list.filter(function(x){return x.day===today}));
- $('#today').innerHTML='<div class="heading"><h2>'+q.days[days.indexOf(today)]+' '+(uiLanguage==='zh'?'课程':'classes')+'</h2><span>'+t.length+' '+q.scheduled+'</span></div>'+(t.length?'<div class="list">'+t.map(function(x){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar"></i><div><p>'+x.name+'</p><small>'+(x.room||q.noLocation)+'</small></div><button class="del" aria-label="'+q.delete+' '+x.name+'" onclick="del('+x.id+')">×</button></article>'}).join('')+'</div>':'<div class="empty">'+q.noToday+'</div>');
- $('#week').innerHTML='<div class="week">'+days.map(function(d,i){var a=sort(list.filter(function(x){return x.day===d}));return '<section class="day"><h3><span>'+q.days[i]+'</span><small>'+(a.length?a.length+' '+q.scheduled:q.free)+'</small></h3>'+(a.map(function(x){return '<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b>'+x.name+'</b><br><small>'+(x.room||q.noLocation)+'</small><button class="del" aria-label="Delete class" onclick="del('+x.id+')">×</button></div></div>'}).join('')||'<div class="item"><small>'+q.noClasses+'</small></div>')+'</section>'}).join('')+'</div>';
-};
-document.querySelector('#language').value=uiLanguage;
-document.querySelector('#language').onchange=function(){uiLanguage=this.value;localStorage.setItem('timetable-language',uiLanguage);applyLanguage()};
-applyLanguage();
-</script><script>
-function colourLabel(){document.querySelector('#colorLabel').childNodes[0].nodeValue=uiLanguage==='zh'?'课程颜色':'Subject colour'}
-var previousLanguageChange=document.querySelector('#language').onchange;
-document.querySelector('#language').onchange=function(){previousLanguageChange.call(this);colourLabel()};
-colourLabel();
-render=function(){
- var q=languageText(), t=sort(list.filter(function(x){return x.day===today}));
- $('#today').innerHTML='<div class="heading"><h2>'+q.days[days.indexOf(today)]+' '+(uiLanguage==='zh'?'课程':'classes')+'</h2><span>'+t.length+' '+q.scheduled+'</span></div>'+(t.length?'<div class="list">'+t.map(function(x){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar" style="background:'+(x.color||'#4f46e5')+'"></i><div><p>'+x.name+'</p><small>'+(x.room||q.noLocation)+'</small></div><button class="del" aria-label="'+q.delete+' '+x.name+'" onclick="del('+x.id+')">×</button></article>'}).join('')+'</div>':'<div class="empty">'+q.noToday+'</div>');
- $('#week').innerHTML='<div class="week">'+days.map(function(d,i){var a=sort(list.filter(function(x){return x.day===d}));return '<section class="day"><h3><span>'+q.days[i]+'</span><small>'+(a.length?a.length+' '+q.scheduled:q.free)+'</small></h3>'+(a.map(function(x){return '<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+(x.color||'#4f46e5')+';margin-right:6px"></span>'+x.name+'</b><br><small>'+(x.room||q.noLocation)+'</small><button class="del" aria-label="Delete class" onclick="del('+x.id+')">×</button></div></div>'}).join('')||'<div class="item"><small>'+q.noClasses+'</small></div>')+'</section>'}).join('')+'</div>';
-};
-$('#form').onsubmit=function(e){e.preventDefault();var x={id:Date.now(),name:$('#name').value,day:$('#day').value,start:$('#start').value,end:$('#end').value,room:$('#room').value,color:$('#color').value};if(x.end<=x.start)return alert(languageText().endAlert);list.push(x);localStorage.setItem('timetable',JSON.stringify(list));e.target.reset();$('#color').value='#4f46e5';$('#modal').close();render()};
-render();
-</script><script>
-function iconLabel(){document.querySelector('#iconLabel').childNodes[0].nodeValue=uiLanguage==='zh'?'课程图片':'Subject picture'}
-var priorLanguageChange=document.querySelector('#language').onchange;
-document.querySelector('#language').onchange=function(){priorLanguageChange.call(this);iconLabel()};
-iconLabel();
-render=function(){
- var q=languageText(), t=sort(list.filter(function(x){return x.day===today}));
- $('#today').innerHTML='<div class="heading"><h2>'+q.days[days.indexOf(today)]+' '+(uiLanguage==='zh'?'课程':'classes')+'</h2><span>'+t.length+' '+q.scheduled+'</span></div>'+(t.length?'<div class="list">'+t.map(function(x){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar" style="background:'+(x.color||'#4f46e5')+'"></i><div><p>'+(x.icon||'📚')+' '+x.name+'</p><small>'+(x.room||q.noLocation)+'</small></div><button class="del" aria-label="'+q.delete+' '+x.name+'" onclick="del('+x.id+')">×</button></article>'}).join('')+'</div>':'<div class="empty">'+q.noToday+'</div>');
- $('#week').innerHTML='<div class="week">'+days.map(function(d,i){var a=sort(list.filter(function(x){return x.day===d}));return '<section class="day"><h3><span>'+q.days[i]+'</span><small>'+(a.length?a.length+' '+q.scheduled:q.free)+'</small></h3>'+(a.map(function(x){return '<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+(x.color||'#4f46e5')+';margin-right:6px"></span>'+(x.icon||'📚')+' '+x.name+'</b><br><small>'+(x.room||q.noLocation)+'</small><button class="del" aria-label="Delete class" onclick="del('+x.id+')">×</button></div></div>'}).join('')||'<div class="item"><small>'+q.noClasses+'</small></div>')+'</section>'}).join('')+'</div>';
-};
-$('#form').onsubmit=function(e){e.preventDefault();var x={id:Date.now(),name:$('#name').value,day:$('#day').value,start:$('#start').value,end:$('#end').value,room:$('#room').value,color:$('#color').value,icon:$('#subjectIcon').value};if(x.end<=x.start)return alert(languageText().endAlert);list.push(x);localStorage.setItem('timetable',JSON.stringify(list));e.target.reset();$('#color').value='#4f46e5';$('#modal').close();render()};
-render();
-</script><script>
-function subjectVisual(x,small){var picture=x.icon||'';if(picture.indexOf('subjects/')===0)return '<img class="'+(small?'week-picture':'subject-picture')+'" src="'+picture+'" alt="">';return '<span>'+ (picture||'📚')+'</span> '}
-render=function(){
- var q=languageText(), t=sort(list.filter(function(x){return x.day===today}));
- $('#today').innerHTML='<div class="heading"><h2>'+q.days[days.indexOf(today)]+' '+(uiLanguage==='zh'?'课程':'classes')+'</h2><span>'+t.length+' '+q.scheduled+'</span></div>'+(t.length?'<div class="list">'+t.map(function(x){return '<article class="class"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><i class="bar" style="background:'+(x.color||'#4f46e5')+'"></i><div><p>'+subjectVisual(x,false)+x.name+'</p><small>'+(x.room||q.noLocation)+'</small></div><button class="del" aria-label="'+q.delete+' '+x.name+'" onclick="del('+x.id+')">×</button></article>'}).join('')+'</div>':'<div class="empty">'+q.noToday+'</div>');
- $('#week').innerHTML='<div class="week">'+days.map(function(d,i){var a=sort(list.filter(function(x){return x.day===d}));return '<section class="day"><h3><span>'+q.days[i]+'</span><small>'+(a.length?a.length+' '+q.scheduled:q.free)+'</small></h3>'+(a.map(function(x){return '<div class="item"><span class="time">'+fmt(x.start)+'<br>– '+fmt(x.end)+'</span><div><b><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+(x.color||'#4f46e5')+';margin-right:6px"></span>'+subjectVisual(x,true)+x.name+'</b><br><small>'+(x.room||q.noLocation)+'</small><button class="del" aria-label="Delete class" onclick="del('+x.id+')">×</button></div></div>'}).join('')||'<div class="item"><small>'+q.noClasses+'</small></div>')+'</section>'}).join('')+'</div>';
-};
-render();
-</script><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, addDoc, collection, query, orderBy, limit, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBT4X9ZtJLCg5Ki1eAZ6eNP5pbq_hKJ5Lw",
-  authDomain: "leen-timetable-1ea47.firebaseapp.com",
-  projectId: "leen-timetable-1ea47",
-  storageBucket: "leen-timetable-1ea47.firebasestorage.app",
-  messagingSenderId: "28863363401",
-  appId: "1:28863363401:web:ee383c3fb8b7e210b4f2a8"
-};
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp);
-let chatUser = null, authMode = "register", stopMessages = null, registrationInProgress = false;
-
-const joinScreen = document.querySelector("#joinScreen");
-const chatApp = document.querySelector("#chatApp");
-const authForm = document.querySelector("#authForm");
-const joinName = document.querySelector("#joinName");
-const accountPassword = document.querySelector("#accountPassword");
-const joinError = document.querySelector("#joinError");
-const authTitle = document.querySelector("#authTitle");
-const authHint = document.querySelector("#authHint");
-const authSubmit = document.querySelector("#authSubmit");
-const switchAuth = document.querySelector("#switchAuth");
-const skipJoin = document.querySelector("#skipJoin");
-const joinChatButton = document.querySelector("#joinChatButton");
-const chatIdentity = document.querySelector("#chatIdentity");
-const messages = document.querySelector("#messages");
-const messageForm = document.querySelector("#messageForm");
-const messageInput = document.querySelector("#messageInput");
-const accountSignOut = document.querySelector("#accountSignOut");
-accountSignOut.addEventListener("click", async () => { await signOut(auth); chatUser = null; window.dispatchEvent(new CustomEvent("leen-user", { detail: null })); document.querySelector("#profileDialog").close(); showJoin("login"); });
-
-function accountEmail(name) {
-  const bytes = new TextEncoder().encode(name.toLocaleLowerCase());
-  let binary = ""; bytes.forEach(byte => binary += String.fromCharCode(byte));
-  return "u" + btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/,"") + "@leen-timetable-1ea47.firebaseapp.com";
-}
-function validName(name) { return /^[\p{L}\p{N}_ -]{2,24}$/u.test(name); }
-function showJoin(mode = "register") {
-  authMode = mode; joinError.textContent = ""; joinScreen.hidden = false; chatApp.hidden = true;
-  const login = mode === "login";
-  authTitle.textContent = login ? "登录群聊账号" : "创建群聊账号";
-  authHint.textContent = login ? "输入你的名字和密码后进入群聊。" : "输入一个不重复的名字和密码。系统会自动给你编号。";
-  authSubmit.textContent = login ? "登录并加入" : "创建账号并加入";
-  switchAuth.textContent = login ? "没有账号？创建账号" : "已有账号？登录";
-  accountPassword.autocomplete = login ? "current-password" : "new-password";
-}
-function showChat(profile) {
-  chatUser = profile; window.dispatchEvent(new CustomEvent("leen-user", { detail: profile })); chatIdentity.textContent = "编号 #" + profile.serial + " · " + profile.name;
-  joinScreen.hidden = true; chatApp.hidden = false; joinChatButton.hidden = true;
-  if (stopMessages) stopMessages();
-  const messageQuery = query(collection(db, "messages"), orderBy("createdAt", "asc"), limit(80));
-  stopMessages = onSnapshot(messageQuery, snap => {
-    messages.replaceChildren();
-    snap.forEach(item => {
-      const data = item.data(), row = document.createElement("article");
-      row.className = "message" + (data.uid === auth.currentUser.uid ? " mine" : "");
-      const name = document.createElement("b"); name.textContent = "#" + data.serial + " " + data.name;
-      const text = document.createElement("div"); text.textContent = data.text;
-      const time = document.createElement("small"); time.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : "刚刚";
-      row.append(name, text, time); messages.append(row);
-    });
-    messages.scrollTop = messages.scrollHeight;
-  });
-}
-onAuthStateChanged(auth, async user => {
-  if (!user) return;
-  const profile = await getDoc(doc(db, "users", user.uid));
-  if (profile.exists()) showChat(profile.data());
-  else if (!registrationInProgress) { await signOut(auth); }
-});
-switchAuth.addEventListener("click", () => showJoin(authMode === "login" ? "register" : "login"));
-skipJoin.addEventListener("click", () => { joinScreen.hidden = true; chatApp.hidden = true; joinChatButton.hidden = false; });
-joinChatButton.addEventListener("click", () => showJoin("login"));
-
-authForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  const name = joinName.value.trim(), password = accountPassword.value, email = accountEmail(name);
-  if (!validName(name)) { joinError.textContent = "名字需要 2–24 个字，可使用中文、字母、数字、空格、_ 或 -。"; return; }
-  if (password.length < 6) { joinError.textContent = "密码至少需要 6 个字符。"; return; }
-  joinError.textContent = authMode === "login" ? "正在登录…" : "正在创建账号…";
-  try {
-    if (authMode === "login") {
-      const credential = await signInWithEmailAndPassword(auth, email, password);
-      const profileSnapshot = await getDoc(doc(db, "users", credential.user.uid));
-      if (!profileSnapshot.exists()) throw new Error("这个账号没有群聊资料，请重新创建账号。");
-      showChat(profileSnapshot.data());
-      return;
-    }
-    const nameRef = doc(db, "usernames", encodeURIComponent(name.toLocaleLowerCase()));
-    const alreadyUsed = await getDoc(nameRef);
-    if (alreadyUsed.exists()) throw new Error("这个名字已经被使用，请换一个。");
-    registrationInProgress = true;
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    const profile = await runTransaction(db, async transaction => {
-      const userRef = doc(db, "users", credential.user.uid);
-      const registryRef = doc(db, "usernames", encodeURIComponent(name.toLocaleLowerCase()));
-      const counterRef = doc(db, "system", "counter");
-      const used = await transaction.get(registryRef);
-      if (used.exists()) throw new Error("这个名字已经被使用，请换一个。");
-      const counter = await transaction.get(counterRef);
-      const serial = (counter.exists() ? (counter.data().lastSerial || 0) : 0) + 1;
-      const data = { name, serial, uid: credential.user.uid, createdAt: serverTimestamp() };
-      transaction.set(userRef, data); transaction.set(registryRef, { uid: credential.user.uid, name, serial }); transaction.set(counterRef, { lastSerial: serial });
-      return data;
-    });
-    registrationInProgress = false;
-    showChat(profile);
-  } catch (error) {
-    registrationInProgress = false;
-    const codes = { "auth/email-already-in-use":"这个名字已经被使用，请换一个。", "auth/invalid-credential":"名字或密码不正确。", "auth/wrong-password":"名字或密码不正确。", "auth/user-not-found":"名字或密码不正确。" };
-    joinError.textContent = codes[error.code] || error.message || "无法完成操作，请再试一次。";
-  }
-});
-messageForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  const text = messageInput.value.trim();
-  if (!text || !chatUser || !auth.currentUser) return;
-  messageInput.disabled = true;
-  try { await addDoc(collection(db, "messages"), { text, name: chatUser.name, serial: chatUser.serial, uid: auth.currentUser.uid, createdAt: serverTimestamp() }); messageInput.value = ""; }
-  catch (error) { alert("发送失败，请检查网络后重试。"); }
-  finally { messageInput.disabled = false; messageInput.focus(); }
-});
-</script><script>
-(function(){
-  var dialog=document.querySelector("#profileDialog"), info=document.querySelector("#accountInfo"), signOutButton=document.querySelector("#accountSignOut"), profileLanguage=document.querySelector("#profileLanguage"), pageLanguage=document.querySelector("#language");
-  document.querySelector("#profileButton").addEventListener("click",function(){profileLanguage.value=pageLanguage.value;dialog.showModal()});
-  document.querySelector("#closeProfile").addEventListener("click",function(){dialog.close()});
-  profileLanguage.addEventListener("change",function(){pageLanguage.value=this.value;pageLanguage.dispatchEvent(new Event("change"))});
-  window.addEventListener("leen-user",function(event){var user=event.detail;if(user){info.textContent="名字："+user.name+" · 编号 #"+user.serial;signOutButton.hidden=false}else{info.textContent="尚未加入群聊";signOutButton.hidden=true}});
-})();
-</script></body></html>
-
-
-
-
-
-
-
-
-
-
-
-
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEEN Timetable</title><link rel="icon" href="logo.png"><link rel="apple-touch-icon" href="logo.png">
+<style>
+:root{--ink:#16213b;--muted:#667085;--paper:#f5f6fb;--card:#fff;--line:#e1e5ef;--accent:#4f46e5}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{max-width:700px;margin:auto;padding:18px 16px 44px}header{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px;margin-right:auto}.profile{padding:0;border:0;background:transparent}.profile img{width:48px;height:48px;object-fit:cover;border-radius:50%;border:1px solid var(--line);display:block}h1{font-size:1.35rem;margin:0}.sub{margin:2px 0 0;color:var(--muted);font-size:.86rem}.btn{border:0;border-radius:10px;padding:9px 12px;font-weight:700;background:transparent;color:var(--ink)}.primary{background:var(--accent);color:#fff}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#e7e9f1;padding:5px;border-radius:12px;margin-top:18px}.tab.active{background:#fff}.heading,.chat-head{display:flex;justify-content:space-between;align-items:baseline;margin:20px 2px 10px}.heading h2,.chat-head h2{font-size:1rem;margin:0}.muted,small{color:var(--muted);font-size:.83rem}.list{display:grid;gap:10px}.class{display:grid;grid-template-columns:60px 5px 1fr auto;gap:12px;align-items:center;padding:13px;background:var(--card);border:1px solid var(--line);border-radius:14px}.time{color:var(--muted);font-size:.78rem;font-weight:700}.bar{height:42px;border-radius:8px;background:var(--accent)}.class p{margin:0;font-weight:700}.delete{border:0;background:transparent;color:var(--muted);font-size:1.25rem}.empty{padding:28px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted);background:var(--card)}.week{display:grid;gap:10px}.day{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}.day h3{display:flex;justify-content:space-between;margin:0;padding:11px 13px;border-bottom:1px solid var(--line);font-size:.95rem}.week-row{display:grid;grid-template-columns:60px 1fr auto;gap:10px;padding:11px 13px;border-bottom:1px solid var(--line)}.week-row:last-child{border:0}.week-row b{font-size:.92rem}.chat{margin-top:28px}.messages{height:300px;overflow:auto;display:grid;gap:10px;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px}.message{max-width:85%;padding:9px 11px;border-radius:12px;background:#edf0f6}.message.mine{justify-self:end;background:#e8e7ff}.message b{font-size:.82rem}.message small{display:block;margin-top:3px}.message-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.control{width:100%;border:1px solid #d8dce7;border-radius:10px;padding:10px;background:#fff}.overlay{position:fixed;inset:0;z-index:10;background:#17203388;display:grid;place-items:center;padding:16px}.panel{width:min(92vw,410px);background:#fff;border-radius:18px;padding:24px;box-shadow:0 20px 60px #0006}.panel>img{display:block;width:72px;height:72px;object-fit:cover;border-radius:50%;margin:0 auto}.panel h2{text-align:center;margin:12px 0 5px}.panel p{text-align:center;color:var(--muted)}label{display:block;font-size:.86rem;font-weight:700;margin:13px 0 5px}.error{min-height:1.25em;text-align:left!important;color:#b42318;font-size:.85rem}.wide{width:100%;margin-top:14px}.link-button{display:block;margin:11px auto 0;color:var(--accent)}dialog{border:0;border-radius:18px;padding:0;box-shadow:0 20px 60px #0006}dialog::backdrop{background:#17203388}.settings{position:relative;padding:22px;width:min(90vw,360px)}.settings h2{margin:0 0 14px}.close{position:absolute;right:10px;top:8px}.account{padding:12px;border-radius:10px;background:var(--paper);color:var(--muted)}hr{border:0;border-top:1px solid var(--line);margin:18px 0}.online{color:#16803c;font-size:.82rem}@media(min-width:600px){.week{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="app">
+<header>
+<div class="brand"><button class="profile" id="profileButton" aria-label="Settings"><img src="logo.png" alt="LEEN"></button><div><h1 id="title">My timetable</h1><p class="sub" id="date"></p></div></div>
+<button class="btn primary" id="addButton">+ Add class</button><select class="control" id="language" style="width:auto"><option value="en">English</option><option value="zh">中文</option></select><button class="btn" id="joinButton">Join chat</button>
+</header>
+<nav class="tabs"><button class="btn tab active" data-view="today">Today</button><button class="btn tab" data-view="week">Week</button></nav>
+<section id="todayView"></section><section id="weekView" hidden></section>
+<section class="chat" id="chat" hidden><div class="chat-head"><div><h2 id="chatTitle">Class group chat</h2><p class="muted" id="identity"></p></div><span class="online">● Live</span></div><div class="messages" id="messages"></div><form class="message-form" id="messageForm"><input class="control" id="messageInput" maxlength="500" placeholder="Write a message…" required><button class="btn primary">Send</button></form></section>
+</main>
+<div class="overlay" id="authOverlay"><section class="panel"><img src="logo.png" alt="LEEN"><h2 id="authTitle">Create chat account</h2><p id="authText">Choose a unique name and password.</p><form id="authForm"><label id="nameLabel" for="nameInput">Name</label><input class="control" id="nameInput" maxlength="24" autocomplete="username" required><label id="passwordLabel" for="passwordInput">Password</label><input class="control" id="passwordInput" type="password" minlength="6" autocomplete="new-password" required><p class="error" id="authError"></p><button class="btn primary wide" id="authSubmit">Create account and join</button></form><button class="btn link-button" id="switchButton" type="button">Already have an account? Sign in</button><button class="btn link-button" id="skipButton" type="button">Not now</button></section></div>
+<dialog id="classDialog"><form class="settings" id="classForm"><h2 id="classTitle">Add a class</h2><label id="courseLabel">Class name<input class="control" id="courseName" required></label><label id="dayLabel">Day<select class="control" id="courseDay"></select></label><label id="startLabel">Starts<input class="control" id="startTime" type="time" required></label><label id="endLabel">Ends<input class="control" id="endTime" type="time" required></label><label id="roomLabel">Room or note<input class="control" id="room"></label><label id="colourLabel">Subject colour<input class="control" id="colour" type="color" value="#4f46e5"></label><div style="text-align:right;margin-top:16px"><button class="btn" type="button" id="cancelClass">Cancel</button><button class="btn primary">Save</button></div></form></dialog>
+<dialog id="settingsDialog"><section class="settings"><button class="delete close" id="closeSettings">×</button><h2 id="settingsTitle">Account settings</h2><div class="account" id="accountInfo">Not signed in</div><button class="btn" id="signOutButton" hidden>Sign out</button><hr><label id="settingsLangLabel" for="settingsLanguage">Language</label><select class="control" id="settingsLanguage"><option value="en">English</option><option value="zh">中文</option></select></section></dialog>
+<script>
+const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const text={en:{title:"My timetable",today:"Today",week:"Week",add:"+ Add class",classes:"classes",scheduled:"scheduled",free:"Free",none:"No classes",noToday:"No classes today. Enjoy your free time!",save:"Save",cancel:"Cancel",addTitle:"Add a class",name:"Class name",day:"Day",start:"Starts",end:"Ends",room:"Room or note",colour:"Subject colour",chat:"Class group chat",join:"Join chat",send:"Send",message:"Write a message…",settings:"Account settings",language:"Language",signOut:"Sign out"},zh:{title:"我的课程表",today:"今天",week:"本周",add:"+ 添加课程",classes:"课程",scheduled:"节课",free:"空闲",none:"没有课程",noToday:"今天没有课程，好好休息！",save:"保存",cancel:"取消",addTitle:"添加课程",name:"课程名称",day:"星期",start:"开始时间",end:"结束时间",room:"教室或备注",colour:"课程颜色",chat:"班级群聊",join:"加入群聊",send:"发送",message:"输入消息…",settings:"账户设置",language:"语言",signOut:"退出账号"}};
+let lang=localStorage.getItem("leen-language")||"en", classes=JSON.parse(localStorage.getItem("leen-classes")||"null")||[];
+const $=s=>document.querySelector(s), today=days[(new Date().getDay()+6)%7], format=t=>new Date("2000-01-01T"+t).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}), sorted=a=>[...a].sort((a,b)=>a.start.localeCompare(b.start));
+function saveClasses(){localStorage.setItem("leen-classes",JSON.stringify(classes))}
+function deleteClass(id){classes=classes.filter(x=>x.id!==id);saveClasses();render()}
+window.deleteClass=deleteClass;
+function render(){const q=text[lang], list=sorted(classes.filter(x=>x.day===today));$("#todayView").innerHTML='<div class="heading"><h2>'+today+" "+q.classes+'</h2><span class="muted">'+list.length+" "+q.scheduled+"</span></div>"+(list.length?'<div class="list">'+list.map(x=>'<article class="class"><span class="time">'+format(x.start)+"<br>– "+format(x.end)+'</span><i class="bar" style="background:'+(x.colour||"#4f46e5")+'"></i><div><p>'+x.name+'</p><small>'+ (x.room||"")+'</small></div><button class="delete" onclick="deleteClass('+x.id+')">×</button></article>').join("")+"</div>":'<div class="empty">'+q.noToday+"</div>");$("#weekView").innerHTML='<div class="week">'+days.map(d=>{const a=sorted(classes.filter(x=>x.day===d));return '<section class="day"><h3><span>'+d+'</span><small>'+ (a.length?a.length+" "+q.scheduled:q.free)+'</small></h3>'+(a.map(x=>'<div class="week-row"><span class="time">'+format(x.start)+"<br>– "+format(x.end)+'</span><div><b><span style="display:inline-block;width:9px;height:9px;background:'+(x.colour||"#4f46e5")+';border-radius:50%;margin-right:5px"></span>'+x.name+'</b><br><small>'+ (x.room||"")+'</small></div><button class="delete" onclick="deleteClass('+x.id+')">×</button></div>').join("")||'<div class="week-row"><small>'+q.none+"</small></div>")+"</section>"}).join("")+"</div>"}
+function applyLanguage(){const q=text[lang];document.documentElement.lang=lang;document.title=q.title;$("#title").textContent=q.title;$("#addButton").textContent=q.add;$(".tab[data-view=today]").textContent=q.today;$(".tab[data-view=week]").textContent=q.week;$("#classTitle").textContent=q.addTitle;$("#courseLabel").childNodes[0].nodeValue=q.name;$("#dayLabel").childNodes[0].nodeValue=q.day;$("#startLabel").childNodes[0].nodeValue=q.start;$("#endLabel").childNodes[0].nodeValue=q.end;$("#roomLabel").childNodes[0].nodeValue=q.room;$("#colourLabel").childNodes[0].nodeValue=q.colour;$("#cancelClass").textContent=q.cancel;$("#chatTitle").textContent=q.chat;$("#joinButton").textContent=q.join;$("#messageInput").placeholder=q.message;$("#messageForm button").textContent=q.send;$("#settingsTitle").textContent=q.settings;$("#settingsLangLabel").textContent=q.language;$("#signOutButton").textContent=q.signOut;$("#language").value=lang;$("#settingsLanguage").value=lang;$("#courseDay").innerHTML=days.map(d=>'<option '+(d===today?"selected":"")+">"+d+"</option>").join("");render()}
+$("#date").textContent=new Intl.DateTimeFormat(undefined,{weekday:"long",month:"short",day:"numeric"}).format(new Date());$("#language").onchange=e=>{lang=e.target.value;localStorage.setItem("leen-language",lang);applyLanguage()};$("#settingsLanguage").onchange=e=>{lang=e.target.value;localStorage.setItem("leen-language",lang);applyLanguage()};document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));$("#todayView").hidden=b.dataset.view!=="today";$("#weekView").hidden=b.dataset.view!=="week"});$("#addButton").onclick=()=>$("#classDialog").showModal();$("#cancelClass").onclick=()=>$("#classDialog").close();$("#classForm").onsubmit=e=>{e.preventDefault();const c={id:Date.now(),name:$("#courseName").value.trim(),day:$("#courseDay").value,start:$("#startTime").value,end:$("#endTime").value,room:$("#room").value.trim(),colour:$("#colour").value};if(c.end<=c.start)return alert("End time must be after start time.");classes.push(c);saveClasses();e.target.reset();$("#classDialog").close();render()};$("#profileButton").onclick=()=>$("#settingsDialog").showModal();$("#closeSettings").onclick=()=>$("#settingsDialog").close();applyLanguage();
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,addDoc,collection,query,orderBy,limit,onSnapshot,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyBT4X9ZtJLCg5Ki1eAZ6eNP5pbq_hKJ5Lw",authDomain:"leen-timetable-1ea47.firebaseapp.com",projectId:"leen-timetable-1ea47",storageBucket:"leen-timetable-1ea47.firebasestorage.app",messagingSenderId:"28863363401",appId:"1:28863363401:web:ee383c3fb8b7e210b4f2a8"}),auth=getAuth(app),db=getFirestore(app);
+const A=s=>document.querySelector(s);let mode="register",profile=null,unsubscribe=null,registering=false;
+const overlay=A("#authOverlay"),form=A("#authForm"),name=A("#nameInput"),password=A("#passwordInput"),error=A("#authError");
+const emailFor=n=>{let b="";new TextEncoder().encode(n.toLocaleLowerCase()).forEach(x=>b+=String.fromCharCode(x));return"u"+btoa(b).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")+"@leen-timetable-1ea47.firebaseapp.com"};
+const valid=n=>/^[\p{L}\p{N}_ -]{2,24}$/u.test(n);
+function authScreen(next){mode=next;error.textContent="";const login=next==="login";A("#authTitle").textContent=login?"登录群聊账号":"创建群聊账号";A("#authText").textContent=login?"输入你的名字和密码后进入群聊。":"输入一个不重复的名字和至少 6 位密码。";A("#authSubmit").textContent=login?"登录并加入":"创建账号并加入";A("#switchButton").textContent=login?"没有账号？创建账号":"已有账号？登录";password.autocomplete=login?"current-password":"new-password";overlay.hidden=false}
+function showChat(p){profile=p;overlay.hidden=true;A("#chat").hidden=false;A("#joinButton").hidden=true;A("#identity").textContent="编号 #"+p.serial+" · "+p.name;A("#accountInfo").textContent="名字："+p.name+" · 编号 #"+p.serial;A("#signOutButton").hidden=false;if(unsubscribe)unsubscribe();unsubscribe=onSnapshot(query(collection(db,"messages"),orderBy("createdAt","asc"),limit(80)),snap=>{const box=A("#messages");box.replaceChildren();snap.forEach(d=>{const x=d.data(),el=document.createElement("article");el.className="message"+(x.uid===auth.currentUser.uid?" mine":"");el.innerHTML="<b></b><div></div><small></small>";el.querySelector("b").textContent="#"+x.serial+" "+x.name;el.querySelector("div").textContent=x.text;el.querySelector("small").textContent=x.createdAt?.toDate?x.createdAt.toDate().toLocaleString():"刚刚";box.append(el)});box.scrollTop=box.scrollHeight})}
+onAuthStateChanged(auth,async u=>{if(!u)return;const p=await getDoc(doc(db,"users",u.uid));if(p.exists())showChat(p.data());else if(!registering) await signOut(auth)});
+A("#switchButton").onclick=()=>authScreen(mode==="login"?"register":"login");A("#skipButton").onclick=()=>{overlay.hidden=true;A("#joinButton").hidden=false};A("#joinButton").onclick=()=>authScreen("login");
+form.onsubmit=async e=>{e.preventDefault();const n=name.value.trim(),pw=password.value;if(!valid(n)){error.textContent="名字需要 2–24 个字符。";return}if(pw.length<6){error.textContent="密码至少需要 6 位。";return}error.textContent=mode==="login"?"正在登录…":"正在创建…";try{if(mode==="login"){const c=await signInWithEmailAndPassword(auth,emailFor(n),pw),p=await getDoc(doc(db,"users",c.user.uid));if(!p.exists())throw Error("账号资料不存在。");showChat(p.data());return}const registry=doc(db,"usernames",encodeURIComponent(n.toLocaleLowerCase()));if((await getDoc(registry)).exists())throw Error("这个名字已经被使用。");registering=true;const c=await createUserWithEmailAndPassword(auth,emailFor(n),pw);const p=await runTransaction(db,async tx=>{const r=doc(db,"usernames",encodeURIComponent(n.toLocaleLowerCase())),counter=doc(db,"system","counter"),used=await tx.get(r);if(used.exists())throw Error("这个名字已经被使用。");const count=await tx.get(counter),serial=(count.exists()?count.data().lastSerial||0:0)+1,data={name:n,serial,uid:c.user.uid,createdAt:serverTimestamp()};tx.set(doc(db,"users",c.user.uid),data);tx.set(r,{uid:c.user.uid,name:n,serial});tx.set(counter,{lastSerial:serial});return data});registering=false;showChat(p)}catch(x){registering=false;const map={"auth/email-already-in-use":"这个名字已经被使用。","auth/invalid-credential":"名字或密码不正确。"};error.textContent=map[x.code]||x.message||"操作失败，请再试一次。"}};
+A("#messageForm").onsubmit=async e=>{e.preventDefault();const v=A("#messageInput").value.trim();if(!v||!profile)return;await addDoc(collection(db,"messages"),{text:v,name:profile.name,serial:profile.serial,uid:auth.currentUser.uid,createdAt:serverTimestamp()});A("#messageInput").value=""};
+A("#signOutButton").onclick=async()=>{await signOut(auth);profile=null;A("#chat").hidden=true;A("#joinButton").hidden=false;A("#accountInfo").textContent="Not signed in";A("#signOutButton").hidden=true;A("#settingsDialog").close();authScreen("login")};
+</script>
+</body></html>
 
